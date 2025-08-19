@@ -1,12 +1,11 @@
 
 
+from fastapi import HTTPException, HTTPException
 from qwen_vl_utils import process_vision_info
-import torch
-from typing import Any, Dict
 import time
-from fastapi import HTTPException
+import torch
 from transformers import ProcessorMixin, PreTrainedModel
-
+from typing import Any, Dict
 
 def _prepare_messages(image_path: str, prompt: str) -> Dict[str, Any]:
     """

@@ -1,13 +1,13 @@
 import os
 import asyncio
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 from fastapi import FastAPI, UploadFile, File, HTTPException, Body
-from pydantic import BaseModel, Field
-import tempfile
+from pydantic import BaseModel
 from dots_ocr.utils.device_utils import pick_device_and_dtype
 from dots_ocr.utils.pipeline_utils import load_pipeline
 from dots_ocr.utils.inference_utils import get_generation_output
+from dots_ocr.utils.io_utils import save_upload_to_temp as save_upload_to_temp
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -22,22 +22,9 @@ model = None
 processor = None
 generate_lock = asyncio.Lock()
 
-def _save_upload_to_temp(upload: UploadFile) -> str:
-    _, ext = os.path.splitext(upload.filename or "")
-    if not ext:
-        ext = ".jpg"
-    with tempfile.NamedTemporaryFile(delete=False, suffix=ext) as tmp:
-        tmp.write(upload.file.read())
-        return tmp.name
 
 app = FastAPI(title="DotsOCR FastAPI Server", version="1.0.0")
 
-class JSONInferRequest(BaseModel):
-    prompt: str = Field(..., description="Instruction/prompt for the model")
-    image_path: Optional[str] = Field(None, description="Local path to an image on the server")
-    image_url: Optional[str] = Field(None, description="Publicly reachable image URL")
-    image_base64: Optional[str] = Field(None, description="Base64-encoded image bytes (no data: prefix)")
-    max_new_tokens: int = Field(DEFAULT_MAX_NEW_TOKENS, ge=1, le=64000)
 
 class InferResponse(BaseModel):
     text: str
@@ -86,7 +73,7 @@ async def infer_upload(
 ):
     tmp_path = None
     try:
-        tmp_path = _save_upload_to_temp(file)
+        tmp_path = save_upload_to_temp(file)
         async with generate_lock:
             loop = asyncio.get_event_loop()
             result = await loop.run_in_executor(
