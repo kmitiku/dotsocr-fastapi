@@ -11,3 +11,13 @@ poetry install
 ```
 
 ## Download model weights
+
+```bash
+poetry run download_weights   
+```
+
+## Start server
+
+```bash
+PYTHONPATH="./weights${PYTHONPATH+:$PYTHONPATH}" poetry run serve  
+```
