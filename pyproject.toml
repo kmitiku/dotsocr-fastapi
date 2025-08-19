@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "dotsocr-fastapi"
+version = "0.1.0"
+description = "FastAPI server for DotsOCR (Qwen-VL style) inference"
+authors = ["Mitiku Yohannes <mitiku@kera.health>"]
+readme = "README.md"
+packages = [
+    { include = "dots_ocr", from = "src" }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.12,<3.13"
+fastapi = "^0.110.0"
+uvicorn = {version = "^0.27.0", extras = ["standard"]}
+transformers = "==4.51.3"
+pillow = "^10.4.0"
+requests = "^2.32.5"
+torch = "==2.7.0"
+qwen-vl-utils = "==0.0.11"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.5.0"
+black = "^24.4.2"
+
+
+[tool.poetry.scripts]
+serve = "dots_ocr.app:main"
