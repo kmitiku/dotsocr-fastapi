@@ -1,5 +1,7 @@
 import torch
 from transformers import AutoModelForCausalLM, AutoProcessor
+from DotsOCR import configuration_dots
+
 
 def load_pipeline(model_path: str, attention_impl: str, device: str, dtype: torch.dtype):
     global model, processor
@@ -15,7 +17,6 @@ def load_pipeline(model_path: str, attention_impl: str, device: str, dtype: torc
     )
     model.to(device)
     model.eval()
-    print("LOaded processor:", processor)
     return model, processor
 
 

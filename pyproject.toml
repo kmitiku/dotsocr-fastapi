@@ -17,6 +17,7 @@ pillow = "^10.4.0"
 requests = "^2.32.5"
 torch = "==2.7.0"
 qwen-vl-utils = "==0.0.11"
+huggingface-hub = "^0.34.4"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.5.0"
@@ -25,3 +26,4 @@ black = "^24.4.2"
 
 [tool.poetry.scripts]
 serve = "dots_ocr.app:main"
+download_weights = "dots_ocr.download_weights:main"
