@@ -72,9 +72,13 @@ def get_generation_output(
         )
     
 
+    try:
+        first_param_device = next(p.device for p in model.parameters())
+    except StopIteration:
+        # Extremely rare: model has no params on device yet
+        first_param_device = device
 
-
-    inputs = __get_model_inputs(processor, image_path, prompt, device=device)
+    inputs = __get_model_inputs(processor, image_path, prompt, device=first_param_device)
     with torch.no_grad():
         generated_ids = model.generate(
             **inputs,

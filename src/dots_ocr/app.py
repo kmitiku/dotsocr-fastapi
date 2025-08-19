@@ -9,6 +9,7 @@ from dots_ocr.utils.pipeline_utils import load_pipeline
 from dots_ocr.utils.inference_utils import get_generation_output
 from dots_ocr.utils.io_utils import save_upload_to_temp as save_upload_to_temp
 from dotenv import load_dotenv
+import torch
 
 load_dotenv()
 

@@ -33,7 +33,7 @@ def load_pipeline(model_path: str, attention_impl: str, device: str, dtype: torc
             torch_dtype=dtype,
             low_cpu_mem_usage=True,
         )
-    model.to(device)
+        model.to(device)
     model.eval()
     return model, processor
 
