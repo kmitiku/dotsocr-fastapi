@@ -1,20 +1,16 @@
 import os
-import io
-import time
 import asyncio
-import base64
 from typing import Any, Dict, Optional
 
-import torch
 from fastapi import FastAPI, UploadFile, File, HTTPException, Body
 from pydantic import BaseModel, Field
-from transformers import AutoModelForCausalLM, AutoProcessor
-from PIL import Image
 import tempfile
 from dots_ocr.utils.device_utils import pick_device_and_dtype
 from dots_ocr.utils.pipeline_utils import load_pipeline
 from dots_ocr.utils.inference_utils import get_generation_output
-from DotsOCR import configuration_dots # This is currently workaround to force loading the DotsOCR module
+from dotenv import load_dotenv
+
+load_dotenv()
 
 DEVICE, DTYPE = pick_device_and_dtype()
 MODEL_PATH = os.environ.get("MODEL_PATH", "./weights/DotsOCR")
@@ -47,7 +43,6 @@ class InferResponse(BaseModel):
     text: str
     latency_sec: float
     device: str
-    dtype: str
 
 @app.on_event("startup")
 def _startup():

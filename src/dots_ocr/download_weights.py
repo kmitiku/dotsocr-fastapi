@@ -1,17 +1,16 @@
-from argparse import ArgumentParser
 import os
 from huggingface_hub import snapshot_download
 
-import re, json, shutil
-from pathlib import Path
+import re, json
+from dotenv import load_dotenv
 
 # Adopted from https://github.com/rednote-hilab/dots.ocr/blob/master/tools/download_model.py
 
 def main():
-    type = "huggingface"
+    load_dotenv()
     model_id = "rednote-hilab/dots.ocr"
-    model_dir = "weights/DotsOCR"
-    attention_impl = os.environ.get("ATTN_IMPL", "sdpa")  # default to sdpa
+    model_dir = os.getenv("MODEL_PATH", "./weights/DotsOCR")
+    attention_impl = os.environ.get("ATTN_IMPL", "sdpa")
     if not os.path.exists(model_dir):
         os.makedirs(model_dir)
     
