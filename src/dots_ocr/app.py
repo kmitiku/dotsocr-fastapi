@@ -34,11 +34,13 @@ class InferResponse(BaseModel):
 @app.on_event("startup")
 def _startup():
     global model, processor
+    use_multi_gpu = torch.cuda.device_count() > 1
     model, processor = load_pipeline(
         model_path=MODEL_PATH,
         attention_impl=ATTN_IMPL,
         device=DEVICE,
-        dtype=DTYPE
+        dtype=DTYPE,
+        use_multi_gpu=use_multi_gpu
     )
 
 @app.get("/health")
